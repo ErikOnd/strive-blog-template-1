@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 import BlogAuthor from "../blog-author/BlogAuthor";
 import "./styles.css";
 const BlogItem = (props) => {
-  const { title, cover, author, _id } = props;
   return (
-    <Link to={`/blog/${_id}`} className="blog-link">
+    <Link to={`/blog/${props.id}`} className="blog-link">
+      {console.log(`/blog/${props.id}`)}
       <Card className="blog-card">
-        <Card.Img variant="top" src={cover} className="blog-cover" />
+        <Card.Img variant="top" src={props.cover} className="blog-cover" />
         <Card.Body>
-          <Card.Title>{title}</Card.Title>
+          <Card.Title>{props.title}</Card.Title>
         </Card.Body>
         <Card.Footer>
-          <BlogAuthor {...author} />
+          <BlogAuthor {...props.author} />
         </Card.Footer>
       </Card>
     </Link>
