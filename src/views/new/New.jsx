@@ -19,8 +19,7 @@ const NewBlogPost = (props) => {
   const [postInfo, setPostInfo] = useState({
     category: "",
     title: "",
-    cover:
-      "https://media.gq.com/photos/5b9ad94ed02a18036b86da54/master/w_2560,h_1326,c_limit/Screen%20Shot%202018-09-13%20at%204.49.36%20PM.png",
+    cover: "",
     readTime: {
       value: 2,
       unit: "minute",
@@ -33,7 +32,10 @@ const NewBlogPost = (props) => {
     content: "",
   });
 
+  const [postCover, setPostCover] = useState();
+
   console.log(postInfo);
+  console.log(postCover);
 
   const postBlogPost = async () => {
     try {
@@ -44,7 +46,22 @@ const NewBlogPost = (props) => {
         },
         body: JSON.stringify(postInfo),
       });
+      console.log(response);
       return await response.json();
+    } catch (error) {
+      console.error("An error occurred:", error);
+      throw error;
+    }
+  };
+
+  const postCoverPost = async () => {
+    try {
+      const data = new FormData();
+      data.append("cover", postCover);
+      await fetch("http://localhost:3001/uploadCover/1d6xd1kaller81uh9", {
+        method: "POST",
+        body: data,
+      });
     } catch (error) {
       console.error("An error occurred:", error);
       throw error;
@@ -86,14 +103,20 @@ const NewBlogPost = (props) => {
           <Form.Label>Blog Content</Form.Label>
 
           <textarea
-            class="form-control"
+            className="form-control"
             id="exampleFormControlTextarea1"
             rows="3"
             onChange={(event) =>
               setPostInfo({ ...postInfo, content: event.target.value })
             }
+            value={postInfo.content}
           ></textarea>
         </Form.Group>
+        <Form.Label className="mt-3">Upload Cover</Form.Label>
+        <Form.Control
+          type="file"
+          onChange={(event) => setPostCover(event.target.files[0])}
+        />
         <Form.Group className="d-flex mt-3 justify-content-end">
           <Button type="reset" size="lg" variant="outline-dark">
             Reset
@@ -108,6 +131,7 @@ const NewBlogPost = (props) => {
             onClick={(event) => {
               event.preventDefault();
               postBlogPost();
+              postCoverPost();
             }}
           >
             Submit
