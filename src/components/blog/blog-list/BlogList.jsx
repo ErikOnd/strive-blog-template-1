@@ -5,14 +5,14 @@ import BlogItem from "../blog-item/BlogItem";
 
 const BlogList = (props) => {
   const [blogPosts, setBlogPosts] = useState();
-
+  const apiUrl = process.env.REACT_APP_BE_URL;
   useEffect(() => {
     getBlogPosts();
   }, []);
 
   const getBlogPosts = async () => {
     try {
-      const res = await fetch("http://localhost:3001/blogPosts");
+      const res = await fetch(`${apiUrl}/blogPosts`);
       const data = await res.json();
       if (res.ok) {
         console.log(data);

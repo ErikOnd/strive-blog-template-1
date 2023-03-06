@@ -11,6 +11,8 @@ const NewBlogPost = (props) => {
   );
   const [html, setHTML] = useState(null);
 
+  const apiUrl = process.env.REACT_APP_BE_URL;
+
   useEffect(() => {
     let html = convertToHTML(editorState.getCurrentContent());
     setHTML(html);
@@ -33,20 +35,22 @@ const NewBlogPost = (props) => {
   });
 
   const [postCover, setPostCover] = useState();
+  const [postId, setPostID] = useState();
 
   console.log(postInfo);
   console.log(postCover);
 
   const postBlogPost = async () => {
     try {
-      const response = await fetch("http://localhost:3001/blogPosts", {
+      const response = await fetch(`${apiUrl}/blogPosts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(postInfo),
       });
-      console.log(response);
+      const blogPost = await response.json();
+      setPostID(blogPost.id);
       return await response.json();
     } catch (error) {
       console.error("An error occurred:", error);
@@ -58,7 +62,7 @@ const NewBlogPost = (props) => {
     try {
       const data = new FormData();
       data.append("cover", postCover);
-      await fetch("http://localhost:3001/uploadCover/1d6xd1kaller81uh9", {
+      await fetch(`${apiUrl}/uploadCover/${postId}`, {
         method: "POST",
         body: data,
       });
