@@ -8,3 +8,15 @@
   height: 400px;
   margin-bottom: 80px;
 }
+
+.pdf-download {
+  background-color: lightblue;
+  padding: 5px;
+  padding-inline: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.pdf-download:hover {
+  background-color: rgb(94, 180, 212);
+}
