@@ -63,7 +63,7 @@ const NewBlogPost = (props) => {
       const data = new FormData();
       data.append("cover", postCover);
       await fetch(`${apiUrl}/uploadCover/${postId}`, {
-        method: "POST",
+        method: "PUT",
         body: data,
       });
     } catch (error) {
