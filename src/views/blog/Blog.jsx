@@ -39,7 +39,12 @@ const Blog = () => {
         <Container>
           <Image className="blog-details-cover" src={blog.cover} fluid />
           <h1 className="blog-details-title">{blog.title}</h1>
-          <span className="pdf-download">PDF download</span>
+          <a
+            className="pdf-download"
+            href={`${apiUrl}/uploadCover/pdf/${blog.id}`}
+          >
+            PDF download
+          </a>
 
           <div className="blog-details-container">
             <div className="blog-details-author">
