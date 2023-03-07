@@ -35,7 +35,6 @@ const NewBlogPost = (props) => {
   });
 
   const [postCover, setPostCover] = useState();
-  const [postId, setPostID] = useState();
 
   console.log(postInfo);
   console.log(postCover);
@@ -50,18 +49,19 @@ const NewBlogPost = (props) => {
         body: JSON.stringify(postInfo),
       });
       const blogPost = await response.json();
-      setPostID(blogPost.id);
-      return await response.json();
+
+      postCoverPost(blogPost.id);
     } catch (error) {
       console.error("An error occurred:", error);
       throw error;
     }
   };
 
-  const postCoverPost = async () => {
+  const postCoverPost = async (postId) => {
     try {
       const data = new FormData();
       data.append("cover", postCover);
+      console.log("blogPostID:", postId);
       await fetch(`${apiUrl}/uploadCover/${postId}`, {
         method: "PUT",
         body: data,
@@ -135,7 +135,6 @@ const NewBlogPost = (props) => {
             onClick={(event) => {
               event.preventDefault();
               postBlogPost();
-              postCoverPost();
             }}
           >
             Submit
