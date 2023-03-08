@@ -117,7 +117,7 @@ const BlogPostComments = ({ blogId }) => {
         {editComment ? (
           <ButtonGroup className="mb-2">
             <Button
-              variant="outline-info"
+              variant="outline-info mb-5"
               onClick={() => {
                 putComment();
               }}
@@ -125,7 +125,7 @@ const BlogPostComments = ({ blogId }) => {
               Edit
             </Button>
             <Button
-              variant="outline-danger"
+              variant="outline-danger mb-5"
               onClick={() => {
                 deleteComment();
               }}
@@ -135,7 +135,7 @@ const BlogPostComments = ({ blogId }) => {
           </ButtonGroup>
         ) : (
           <Button
-            variant="outline-primary"
+            variant="outline-primary mb-5"
             onClick={() => {
               postComment();
             }}

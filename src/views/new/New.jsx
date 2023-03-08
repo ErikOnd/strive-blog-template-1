@@ -5,13 +5,15 @@ import { Button, Container, Form } from "react-bootstrap";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "./styles.css";
+import { useNavigate } from "react-router-dom";
+
 const NewBlogPost = (props) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
   const [html, setHTML] = useState(null);
-
   const apiUrl = process.env.REACT_APP_BE_URL;
+  const navigate = useNavigate();
 
   useEffect(() => {
     let html = convertToHTML(editorState.getCurrentContent());
@@ -49,8 +51,9 @@ const NewBlogPost = (props) => {
         body: JSON.stringify(postInfo),
       });
       const blogPost = await response.json();
-
-      postCoverPost(blogPost.id);
+      if (response.ok) {
+        postCoverPost(blogPost.id);
+      }
     } catch (error) {
       console.error("An error occurred:", error);
       throw error;
@@ -62,10 +65,14 @@ const NewBlogPost = (props) => {
       const data = new FormData();
       data.append("cover", postCover);
       console.log("blogPostID:", postId);
-      await fetch(`${apiUrl}/uploadCover/${postId}`, {
+      const res = await fetch(`${apiUrl}/uploadCover/${postId}`, {
         method: "PUT",
         body: data,
       });
+
+      if (res.ok) {
+        navigate("/");
+      }
     } catch (error) {
       console.error("An error occurred:", error);
       throw error;
@@ -126,7 +133,6 @@ const NewBlogPost = (props) => {
             Reset
           </Button>
           <Button
-            type="submit"
             size="lg"
             variant="dark"
             style={{
