@@ -1,10 +1,13 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 
 const BlogPostComments = ({ blogId }) => {
   const [allComments, setAllComments] = useState();
   const [loading, setLoading] = useState(true);
+  const [editComment, setEditComment] = useState(false);
+  const [commentId, setCommentId] = useState();
 
   const [commentVal, setCommentVal] = useState({
     creator: "John Doe",
@@ -53,6 +56,50 @@ const BlogPostComments = ({ blogId }) => {
     }
   };
 
+  const putComment = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/comments/${commentId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(commentVal),
+      });
+    } catch (error) {
+      console.error("An error occurred:", error);
+      throw error;
+    }
+    setCommentVal({
+      creator: "John Doe",
+      comment: "",
+      likes: 0,
+    });
+    setEditComment(false);
+    getComments();
+  };
+
+  const deleteComment = async () => {
+    const response = await fetch(`${apiUrl}/comments/${commentId}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to delete data: ${response.statusText}`);
+    }
+    setCommentVal({
+      creator: "John Doe",
+      comment: "",
+      likes: 0,
+    });
+    setEditComment(false);
+    getComments();
+  };
+
+  const handleCommentClick = (id) => {
+    console.log("my comment id", id);
+    setEditComment(true);
+  };
+
   return (
     <>
       <Form>
@@ -67,19 +114,52 @@ const BlogPostComments = ({ blogId }) => {
             }}
           />
         </Form.Group>
-        <Button
-          variant="outline-primary"
-          onClick={() => {
-            postComment();
-          }}
-        >
-          Add Comment
-        </Button>
+        {editComment ? (
+          <ButtonGroup className="mb-2">
+            <Button
+              variant="outline-info"
+              onClick={() => {
+                putComment();
+              }}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="outline-danger"
+              onClick={() => {
+                deleteComment();
+              }}
+            >
+              Delete
+            </Button>
+          </ButtonGroup>
+        ) : (
+          <Button
+            variant="outline-primary"
+            onClick={() => {
+              postComment();
+            }}
+          >
+            Add Comment
+          </Button>
+        )}
       </Form>
       {allComments !== undefined &&
         allComments.map((comment) => {
           return (
-            <div className="comment-holder d-flex flex-column" key={comment.id}>
+            <div
+              className="comment-holder d-flex flex-column"
+              key={comment.id}
+              onClick={() => {
+                setCommentId(comment.id);
+                setCommentVal({
+                  creator: comment.creator,
+                  comment: comment.comment,
+                  likes: comment.likes,
+                });
+                handleCommentClick(comment.id);
+              }}
+            >
               <h4>{comment.creator}:</h4>
               <p>{comment.comment}</p>
               <span className="comment-like">Likes:{comment.likes}</span>

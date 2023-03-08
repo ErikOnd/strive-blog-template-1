@@ -15,7 +15,6 @@ const BlogList = (props) => {
       const res = await fetch(`${apiUrl}/blogPosts`);
       const data = await res.json();
       if (res.ok) {
-        console.log(data);
         setBlogPosts(data);
       }
     } catch (error) {
@@ -27,6 +26,7 @@ const BlogList = (props) => {
     <Row>
       {blogPosts?.map((blogPost) => (
         <Col
+          key={blogPost.title}
           md={4}
           style={{
             marginBottom: 50,
