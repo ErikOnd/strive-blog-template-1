@@ -3,6 +3,7 @@ import { Container, Image } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import BlogAuthor from "../../components/blog/blog-author/BlogAuthor";
 import BlogLike from "../../components/likes/BlogLike";
+import BlogPostComments from "./BlogPostComments";
 import "./styles.css";
 
 const Blog = () => {
@@ -41,7 +42,7 @@ const Blog = () => {
           <h1 className="blog-details-title">{blog.title}</h1>
           <a
             className="pdf-download"
-            href={`${apiUrl}/uploadCover/pdf/${blog.id}`}
+            href={`${apiUrl}/blogPosts/pdf/${blog.id}`}
           >
             PDF download
           </a>
@@ -54,6 +55,7 @@ const Blog = () => {
               <div>{blog.createdAt}</div>
               <div>{`${blog.readTime.value} ${blog.readTime.unit} read`}</div>
               <div
+                className="mb-4"
                 style={{
                   marginTop: 20,
                 }}
@@ -64,10 +66,12 @@ const Blog = () => {
           </div>
 
           <div
+            className="mb-5"
             dangerouslySetInnerHTML={{
               __html: blog.content,
             }}
           ></div>
+          <BlogPostComments blogId={blog.id}></BlogPostComments>
         </Container>
       </div>
     );

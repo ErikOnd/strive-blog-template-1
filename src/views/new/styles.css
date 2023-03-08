@@ -20,3 +20,19 @@
 .pdf-download:hover {
   background-color: rgb(94, 180, 212);
 }
+
+.comment-holder {
+  border: 1px solid rgb(0, 0, 0, 0.2);
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.comment-holder:hover {
+  background-color: rgb(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.comment-like {
+  margin-left: auto;
+}
