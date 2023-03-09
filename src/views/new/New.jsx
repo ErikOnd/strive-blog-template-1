@@ -11,6 +11,10 @@ const NewBlogPost = (props) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+
+  const authorMail = {
+    email: "erik.ondra@yahoo.com",
+  };
   const [html, setHTML] = useState(null);
   const apiUrl = process.env.REACT_APP_BE_URL;
   const navigate = useNavigate();
@@ -65,7 +69,7 @@ const NewBlogPost = (props) => {
       const data = new FormData();
       data.append("cover", postCover);
       console.log("blogPostID:", postId);
-      const res = await fetch(`${apiUrl}/uploadCover/${postId}`, {
+      const res = await fetch(`${apiUrl}/file/cover/${postId}`, {
         method: "PUT",
         body: data,
       });
@@ -73,6 +77,26 @@ const NewBlogPost = (props) => {
       if (res.ok) {
         navigate("/");
       }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      throw error;
+    }
+  };
+
+  const sendMail = async () => {
+    try {
+      const response = await fetch(
+        (`${apiUrl}/authors/sendMail`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(authorMail),
+        })
+      );
+
+      return await response.json();
     } catch (error) {
       console.error("An error occurred:", error);
       throw error;
@@ -140,6 +164,7 @@ const NewBlogPost = (props) => {
             }}
             onClick={(event) => {
               event.preventDefault();
+              sendMail();
               postBlogPost();
             }}
           >
