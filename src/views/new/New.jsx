@@ -55,8 +55,9 @@ const NewBlogPost = (props) => {
         body: JSON.stringify(postInfo),
       });
       const blogPost = await response.json();
+      console.log("blogPost:", blogPost);
       if (response.ok) {
-        postCoverPost(blogPost.id);
+        postCoverPost(blogPost._id);
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -68,7 +69,7 @@ const NewBlogPost = (props) => {
     try {
       const data = new FormData();
       data.append("cover", postCover);
-      console.log("blogPostID:", postId);
+      console.log("put url", `${apiUrl}/file/cover/${postId}`);
       const res = await fetch(`${apiUrl}/file/cover/${postId}`, {
         method: "PUT",
         body: data,
