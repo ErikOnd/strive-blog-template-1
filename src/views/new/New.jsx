@@ -33,7 +33,7 @@ const NewBlogPost = (props) => {
       unit: "minute",
     },
     author: {
-      name: "Spiderman",
+      name: "Erik",
       avatar:
         "https://whatsondisneyplus.com/wp-content/uploads/2022/12/spiderman.png",
     },
@@ -47,15 +47,16 @@ const NewBlogPost = (props) => {
 
   const postBlogPost = async () => {
     try {
+      const accessToken = localStorage.getItem("accessToken");
       const response = await fetch(`${apiUrl}/blogPosts`, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(postInfo),
       });
       const blogPost = await response.json();
-      console.log("blogPost:", blogPost);
       if (response.ok) {
         postCoverPost(blogPost._id);
       }

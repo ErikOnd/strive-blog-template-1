@@ -21,7 +21,12 @@ const Blog = () => {
 
   const getBlogPost = async (id) => {
     try {
-      const res = await fetch(`${apiUrl}/blogPosts/${id}`);
+      const accessToken = localStorage.getItem("accessToken");
+      const res = await fetch(`${apiUrl}/blogPosts/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       const data = await res.json();
       if (res.ok) {
         setBlog(data);

@@ -12,8 +12,14 @@ const BlogList = (props) => {
 
   const getBlogPosts = async () => {
     try {
-      const res = await fetch(`${apiUrl}/blogPosts`);
+      const accessToken = localStorage.getItem("accessToken");
+      const res = await fetch(`${apiUrl}/blogPosts`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       const data = await res.json();
+      console.log(data);
       if (res.ok) {
         setBlogPosts(data);
       }
@@ -24,7 +30,7 @@ const BlogList = (props) => {
 
   return (
     <Row>
-      {blogPosts?.map((blogPost) => (
+      {blogPosts?.blogPosts?.map((blogPost) => (
         <Col
           key={blogPost.title}
           md={4}
